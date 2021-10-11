@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.5.3/web3.min.js" integrity="sha512-qlZUrJYABWPEqVZvpmE0zITE+dl+1+KW8AX6lyge4T6e1O52+bL/0J2awi2vJpWGvi70ZnVqjxw14kjILOPplw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="election_abi.js"></script>
+    
+    <title>Election Dapp</title>
+</head>
+<body>
+        
+    <!-- The whole content of page -->
+    <section class="content">
+            <!-- Header of the page -->
+            <header>
+            <div class="user"></div>
+            <h1>The Election Dapp</h1>
+            <button class="connect btn" style="border: 2px solid #F3EFCC;">Connect Wallet</button>
+            </header>
+            
+            <!-- First section of the page -->
+            <section class="initial">
+                <!-- UI to display list of candidates -->
+                <div class="candList">
+                    <h2>List of Candidates</h2>
+                </div>
+                <!-- UI for candidate and voter registration -->
+                <div class="registration">
+                    <div class="reg-card">
+                        <div class="Candidate">
+                            <h2>Candidate Registration</h2>
+                            <form>
+                                <input type="text" class="name" placeholder="Name">
+                                <input type="text" class="party" placeholder="Party">
+                                <button type="submit" class="btn cand-btn">Register</button>
+                            </form>
+                            <div class="cand-msg"></div>
+                        </div>
+                        <div class="voter">
+                            <h2>Voter Registration</h2>
+                            <button class="btn voter-btn">Register</button>
+                            <div class="voter-msg"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Second section of the page -->
+            <section class="later">
+                <!-- UI for voting -->
+                <div class="vote">
+                    <h2>Voting Section</h2>
+                    <form>
+                        <input type="number" id="id" placeholder="Candidate Id">
+                        <button type="submit" id="vote-btn" class="btn">Vote</button>
+                        <div class="vote-msg"></div>
+                    </form>
+                </div>
+                <!-- Winner declaration UI -->
+                <div class="win">
+                    <h2>Winner Declaration</h2>
+                    <button class="btn btn-win">Declare Winner</button>
+                </div>
+            </section>
+    </section>
+</body>
+
+<!---------------------- Javacript Funcitonality------------------------>
+
+<script>
+
+    // Checking for a web3 instance
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+    } else {
+        // If no injected web3 instance is detected, fallback to Ganache.
+        web3 = new web3.providers.HttpProvider('http://127.0.0.1:7545');
+    }
+
+    // Declaration and Initialization 
+    const election = new web3.eth.Contract(electionABI, contractAddress)
+    var nameBar = document.getElementsByClassName('name')[0]
+    var partyBar = document.getElementsByClassName('party')[0]
+    var idBar = document.getElementById('id')
+    var userAccount
+    var element
+    
+    //------------------------- FUNCTIONS ---------------------------//
+
+    // Function to remove the inner html of an element
+    const removeInnerHTML = () => {
+            document.getElementsByClassName(element)[0].innerHTML = ""
+    }
+
+    // Function to connect to wallet
+    const connectWallet = async () => {
+        const connectButton = document.getElementsByClassName('connect')[0]
+        connectButton.addEventListener('click', (event) => {
+            event.preventDefault()
+
+            if(web3.currentProvider.isMetaMask) {
+                ethereum.enable()
+            } else {
+                window.open('https://metamask.io/', '_blank').focus()
+            }
+        })   
+    }
+
+    // Function to check current working account.
+    const checkAccount = async () => {
+        var accountInterval = setInterval(async () => {
+            // Check if account has changed
+            if (web3.eth.getAccounts() !== userAccount) {
+                userAccount =  await web3.eth.getAccounts();
+                // Call some function to update the UI with the new account
+                if(userAccount.length !== 0) {
+                    document.getElementsByClassName('user')[0].innerHTML = "User : " + userAccount
+                } else {
+                    document.getElementsByClassName('user')[0].innerHTML = "Account not connected"
+                }
+            }
+        }, 100);
+    }
+
+    // Function to register the candidate.
+    const candidateRegistration = async () => {
+        document.getElementsByClassName('cand-btn')[0].addEventListener('click', async (event) => {
+            event.preventDefault()
+            element = 'cand-msg'
+            
+            while(nameBar.value != "" && partyBar.value != "") {
+                election.methods.candidateRegistration(nameBar.value, partyBar.value).send({ from: userAccount[0], gas: 3000000})
+                .catch(error => {
+                    if(error.code === 4001) { // UI when transaction is rejected
+                        document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Transaction Rejected</h3>"
+                        setTimeout(removeInnerHTML, 5000)
+                    } else { // UI when transaction is failed
+                        document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Your are already registered!</h3>"
+                        setTimeout(removeInnerHTML, 5000)
+                    }
+                })
+                nameBar.value = ""
+                partyBar.value = ""
+            }
+        })
+        
+    }
+
+    // Function to register a voter.
+    const voterRegistration = async () => {
+        document.getElementsByClassName('voter-btn')[0].addEventListener('click', async (event) => {
+            event.preventDefault()
+            element = 'voter-msg'
+            election.methods.voterRegistration().send({from: userAccount[0]})
+            .catch(error => {
+                if(error.code === 4001) { // UI when transaction is rejected
+                    document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Transaction Rejected</h3>"
+                    setTimeout(removeInnerHTML, 5000)
+                } else { // UI when transaction is failed
+                    document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Your are already registered!</h3>"
+                    setTimeout(removeInnerHTML, 5000)
+                }
+            })
+        })
+    }
+
+    // Function to vote for a candidate.
+    const vote = async () => {
+        document.getElementById('vote-btn').addEventListener('click', (event) => {
+            event.preventDefault()
+            element = 'vote-msg'
+            election.methods.Vote(idBar.value).send({from: userAccount[0]})
+            .catch(error => {
+                if(error.code === 4001) {  // UI when transaction is rejected
+                    document.getElementsByClassName(element)[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>Transaction Rejected</h3>"
+                    setTimeout(removeInnerHTML, 5000)
+                } else { // UI when transaction is failed
+                    document.getElementsByClassName(element)[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>You can vote only once!</h3>"
+                    setTimeout(removeInnerHTML, 5000)
+                }
+            })
+            idBar.value = ""
+        })
+    }
+
+    // Function to declare the winner.
+    const declareWinner = async () => {
+        document.getElementsByClassName('btn-win')[0].addEventListener('click', async (event) => {
+            event.preventDefault()
+            const res = await election.methods.declareWinner().call()
+            document.getElementsByClassName('win')[0].innerHTML += "<h3 style='color:white;margin-top:20px;background:black;padding:0.6rem 1rem;font-size:1.5rem'> Congratulations! "+res._name+" from "+res._party+".<br>You have won the election.</h3>"
+        })
+    }
+
+    // Function to display registered candidates
+    const displayCands = async () => {
+        const candidates = await election.methods.getCandidates().call()
+        for(var i=0; i<candidates.length; i++) {
+            document.getElementsByClassName('candList')[0].innerHTML += "<div><h3>Name : "+candidates[i].name+"<br>Party : "+candidates[i].party+"<br>Id : "+candidates[i].id+"<br> Total Votes : "+candidates[i].numOfVotes+"</h3> </div>"
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------------//
+
+    // Function to start the app
+    const startApp = async () => {
+
+        //----------------- EVENT MANAGEMENT ------------------//
+
+        // UI updation when a candidate is registered.
+        election.events.candidateRegistered()
+        .on('data', event => {
+            element = 'cand-msg'
+            let candidate = event.returnValues
+            document.getElementsByClassName('candList')[0].innerHTML += "<div> <h3> Name : "+candidate.name+"</h3> <h3> Party : "+candidate.party+"</h3> <h3> Id : "+candidate.id+" </div>"
+            document.getElementsByClassName('cand-msg')[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now a registered as a candidate.</h3>"
+            setTimeout(removeInnerHTML, 5000)
+        })
+
+        // UI updation when a voter is registered.
+        election.events.voterRegistered()
+        .on('data', event => {
+            element = 'voter-msg'
+            document.getElementsByClassName('voter-msg')[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now a registered voter.</h3>"
+            setTimeout(removeInnerHTML, 5000)
+        })
+
+        // UI updation when a vote is registered
+        election.events.voteRegistered()
+        .on('data', event => {
+            element = 'vote-msg'
+            console.log(event.returnValues.msg)
+            document.getElementsByClassName('vote-msg')[0].innerHTML = "<h3 style='color:red;background:white;margin-top:20px;padding:0.6rem 1rem'>Your vote has been registered.</h3>"
+            setTimeout(removeInnerHTML, 5000)
+        })
+
+        // Function call
+        displayCands()
+        connectWallet()
+        checkAccount()
+        candidateRegistration()
+        voterRegistration()
+        vote()
+        declareWinner()
+    }
+
+    startApp()
+</script>
+
+</html>
