@@ -220,7 +220,7 @@
             element = 'cand-msg'
             let candidate = event.returnValues
             document.getElementsByClassName('candList')[0].innerHTML += "<div> <h3> Name : "+candidate.name+"</h3> <h3> Party : "+candidate.party+"</h3> <h3> Id : "+candidate.id+" </div>"
-            document.getElementsByClassName('cand-msg')[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now a registered as a candidate.</h3>"
+            document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now registered as a candidate.</h3>"
             setTimeout(removeInnerHTML, 5000)
         })
 
@@ -228,7 +228,7 @@
         election.events.voterRegistered()
         .on('data', event => {
             element = 'voter-msg'
-            document.getElementsByClassName('voter-msg')[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now a registered voter.</h3>"
+            document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:#F3EFCC;margin-top:15px;font-size:15px'>Your are now a registered voter.</h3>"
             setTimeout(removeInnerHTML, 5000)
         })
 
@@ -237,7 +237,7 @@
         .on('data', event => {
             element = 'vote-msg'
             console.log(event.returnValues.msg)
-            document.getElementsByClassName('vote-msg')[0].innerHTML = "<h3 style='color:red;background:white;margin-top:20px;padding:0.6rem 1rem'>Your vote has been registered.</h3>"
+            document.getElementsByClassName(element)[0].innerHTML = "<h3 style='color:red;background:white;margin-top:20px;padding:0.6rem 1rem'>Your vote has been registered.</h3>"
             setTimeout(removeInnerHTML, 5000)
         })
 
