@@ -138,10 +138,10 @@
                 election.methods.candidateRegistration(nameBar.value, partyBar.value).send({ from: userAccount[0], gas: 3000000})
                 .catch(error => {
                     if(error.code === 4001) { // UI when transaction is rejected
-                        document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Transaction Rejected</h3>"
+                        document.getElementsByClassName('cand-msg')[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Transaction Rejected</h3>"
                         setTimeout(removeInnerHTML, 5000)
                     } else { // UI when transaction is failed
-                        document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Your are already registered!</h3>"
+                        document.getElementsByClassName('cand-msg')[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:14px;padding:0.6rem'>Your are already registered!</h3>"
                         setTimeout(removeInnerHTML, 5000)
                     }
                 })
@@ -160,10 +160,10 @@
             election.methods.voterRegistration().send({from: userAccount[0]})
             .catch(error => {
                 if(error.code === 4001) { // UI when transaction is rejected
-                    document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Transaction Rejected</h3>"
+                    document.getElementsByClassName('voter-msg')[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Transaction Rejected</h3>"
                     setTimeout(removeInnerHTML, 5000)
                 } else { // UI when transaction is failed
-                    document.getElementsByClassName(element)[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Your are already registered!</h3>"
+                    document.getElementsByClassName('voter-msg')[0].innerHTML += "<h3 style='color:white;background:red;margin-top:15px;font-size:15px;padding:0.6rem'>Your are already registered!</h3>"
                     setTimeout(removeInnerHTML, 5000)
                 }
             })
@@ -178,10 +178,10 @@
             election.methods.Vote(idBar.value).send({from: userAccount[0]})
             .catch(error => {
                 if(error.code === 4001) {  // UI when transaction is rejected
-                    document.getElementsByClassName(element)[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>Transaction Rejected</h3>"
+                    document.getElementsByClassName('vote-msg')[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>Transaction Rejected</h3>"
                     setTimeout(removeInnerHTML, 5000)
                 } else { // UI when transaction is failed
-                    document.getElementsByClassName(element)[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>You can vote only once!</h3>"
+                    document.getElementsByClassName('vote-msg')[0].innerHTML = "<h3 style='color:white;background:red;margin-top:20px;padding:0.6rem 1rem'>You can vote only once!</h3>"
                     setTimeout(removeInnerHTML, 5000)
                 }
             })
