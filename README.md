@@ -4,10 +4,10 @@ A decentralized application based on Ethereum that provides a basic election env
 ![Screenshot (96)](https://user-images.githubusercontent.com/87273737/139875584-1b77b38c-0645-4015-a5fe-cf73c11fb531.png)
 ![Screenshot (99)](https://user-images.githubusercontent.com/87273737/139875726-06b55a36-7be4-4123-a417-d1a58c2e82bd.png)
 
-![Screenshot (102)](https://user-images.githubusercontent.com/87273737/139875766-b6a3a9c6-1a99-423d-954c-65a8da032452.png)
+![Screenshot (107)](https://user-images.githubusercontent.com/87273737/139877061-c608b038-6700-4c64-b506-a051cd3344d4.png)
 
-![Screenshot (107)](https://user-images.githubusercontent.com/87273737/139876186-7026dfdd-e2fb-40dd-9601-9263a99a284e.png)
+![Screenshot (108)](https://user-images.githubusercontent.com/87273737/139877072-ac86b05d-4119-46d1-9314-8130cb0502e8.png)
 
-![Screenshot (104)](https://user-images.githubusercontent.com/87273737/139876463-e68bbbf5-f1c6-430b-a8ce-e02995d91dc2.png)
+![Screenshot (102)](https://user-images.githubusercontent.com/87273737/139877073-eeef4b33-3d48-4be5-b225-669b3bb1b3e8.png)
 
-![Screenshot (108)](https://user-images.githubusercontent.com/87273737/139875797-73d502c6-820f-41b4-9c63-b112b70a6aa0.png)
+![Screenshot (105)](https://user-images.githubusercontent.com/87273737/139877076-5396c064-cec0-4325-b1da-25bc0e3a5548.png)
