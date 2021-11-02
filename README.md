@@ -8,4 +8,6 @@ A decentralized application based on Ethereum that provides a basic election env
 
 ![Screenshot (107)](https://user-images.githubusercontent.com/87273737/139876186-7026dfdd-e2fb-40dd-9601-9263a99a284e.png)
 
+![Screenshot (104)](https://user-images.githubusercontent.com/87273737/139876463-e68bbbf5-f1c6-430b-a8ce-e02995d91dc2.png)
+
 ![Screenshot (108)](https://user-images.githubusercontent.com/87273737/139875797-73d502c6-820f-41b4-9c63-b112b70a6aa0.png)
