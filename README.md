@@ -1,6 +1,8 @@
-# Election-Dapp
-A **Decentralized Application** based on Ethereum that provides a basic election environment to imitate the election process of electing a winner with the highest vote. <br />
-The Smart Contract for this dapp has been deployed to **Rinkeby testnet**.
+# ELECTION DAPP
+
+## Description
+A **Decentralized Application** based on Ethereum that provides a basic election environment to imitate the election process of electing a winner with the highest vote.
+#### The Smart Contract of this dapp has been deployed to **Rinkeby testnet**.
 
 Click [here](https://election-dapp.anuragmunda.repl.co/) to use Dapp.
 
